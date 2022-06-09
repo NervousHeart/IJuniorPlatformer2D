@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _speed;
@@ -17,7 +18,10 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
-    const string IsWalking = "IsWalking";
+
+    private const string IsWalking = "IsWalking";
+    private const string Jump = "Jump";
+    private const string Horizontal = "Horizontal";
 
     private void Awake()
     {
@@ -30,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     {
         ChangeFlip();
 
-        if (_isGrounded && Input.GetButtonDown("Jump"))
+        if (_isGrounded && Input.GetButtonDown(Jump))
         {
             _rigidbody2D.AddForce(Vector2.up * _jumpPower,ForceMode2D.Impulse);
             _isGrounded = false;
@@ -39,22 +43,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Input.GetAxis("Horizontal")>0)
+        if (Input.GetAxis(Horizontal)>0)
             _animator.SetBool(IsWalking,true);
         else
             _animator.SetBool(IsWalking, false);
 
         _isGrounded = Physics2D.OverlapCircle(_groundCheck.position,_radiusCheckGround, _layerMask);
-        _velocity = new Vector3(Input.GetAxis("Horizontal") * _speed, _rigidbody2D.velocity.y,0f);
+        _velocity = new Vector3(Input.GetAxis(Horizontal) * _speed, _rigidbody2D.velocity.y,0f);
         _rigidbody2D.velocity = _velocity;
     }
 
     private void ChangeFlip()
     {
-        if (_velocity.x > 0)
-            _spriteRenderer.flipX = false;
-        else if (_velocity.x < 0)
-            _spriteRenderer.flipX = true;
+        _spriteRenderer.flipX = _velocity.x < 0 ? true : false;
     }
 
 }
