@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnerApples : MonoBehaviour
 {
-    [SerializeField] private GameObject _template;
+    [SerializeField] private Apple _apples;
     [SerializeField] private Transform[] _points;
     [SerializeField] private float _shift;
 
@@ -29,7 +29,7 @@ public class SpawnerApples : MonoBehaviour
         {
             for (int j = 0; j < Random.Range(1,5); j++)
             {
-                Instantiate(_template, _points[i].transform.position, _points[i].transform.rotation);
+                Instantiate(_apples, _points[i].transform.position, _points[i].transform.rotation);
                 _points[i].transform.position = new Vector3(_points[i].transform.position.x + _shift, _points[i].transform.position.y);
             }
         }
