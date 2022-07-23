@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        ChangeFlip();
+        Flip();
 
         if (_isGrounded && Input.GetButtonDown(Jump))
         {
@@ -53,9 +53,9 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody2D.velocity = _velocity;
     }
 
-    private void ChangeFlip()
+    private void Flip()
     {
-        _spriteRenderer.flipX = _velocity.x < 0 ? true : false;
+        _spriteRenderer.flipX = _velocity.x < 0;
     }
 
 }

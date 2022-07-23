@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 public class Enemy : MonoBehaviour
 {
@@ -11,12 +12,13 @@ public class Enemy : MonoBehaviour
 
     private int _currentPoint;
     private SpriteRenderer _spriteRenderer;
+    private Rigidbody2D _rigidbody;
 
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();   
         _points = new Transform[_path.childCount];
-
+        _rigidbody = GetComponent<Rigidbody2D>();
         for (int i = 0; i < _path.childCount; i++)
         {
             _points[i] = _path.GetChild(i);
@@ -34,17 +36,14 @@ public class Enemy : MonoBehaviour
         if (transform.position == target.position)
         {
             _currentPoint++;
-            ChangeFlip();
+            Flip();
             if (_currentPoint >= _points.Length)
                 _currentPoint = 0;
         }
     }
 
-    private void ChangeFlip()
+    private void Flip()
     {
-        if(_spriteRenderer.flipX)
-            _spriteRenderer.flipX = false;
-        else
-            _spriteRenderer.flipX = true;
+        _spriteRenderer.flipX = _rigidbody.velocity.x < 0;
     }
 }

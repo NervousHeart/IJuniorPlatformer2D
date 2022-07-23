@@ -9,12 +9,14 @@ public class Player : MonoBehaviour
 
     public int Money { get; private set; }
 
-    private void Update()
+    private void Start()
     {
         _text.text = Money.ToString();
     }
+
     public void AddMoney(int money)
     {
         Money += money;
+        _text.text = Money.ToString();
     }
 }
